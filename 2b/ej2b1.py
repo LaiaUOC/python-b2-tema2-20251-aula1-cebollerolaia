@@ -42,22 +42,20 @@ from pathlib import Path
 
 
 def read_csv_basic(file_path: str) -> pd.DataFrame:
-    # Write here your code
-    pass
+    return pd.read_csv(file_path)
 
 def read_csv_header_issue(file_path: str, header_row: int) -> pd.DataFrame:
-    # Write here your code
-    pass
+    return pd.read_csv(file_path, skiprows= header_row)
 
 def read_csv_multi_index(file_path: str, index_cols: t.List[str]) -> pd.DataFrame:
-    # Write here your code
-    pass
+    return pd.read_csv(file_path, index_col= index_cols)
 
 def read_csv_custom_separator(
     file_path: str, separator: str, decimal: str
 ) -> pd.DataFrame:
-    # Write here your code
-    pass
+    df = pd.read_csv(file_path, sep=separator, decimal= decimal)
+    df["Stars"] = pd.to_numeric(df["Stars"], errors = "coerce")
+    return df
 
 
 # Para probar el código, descomenta las siguientes líneas

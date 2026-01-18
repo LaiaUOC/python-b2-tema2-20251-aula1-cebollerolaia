@@ -61,23 +61,44 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 
 def create_meshgrid(X, resolution=0.02):
-    # Write here your code
-    pass
+    x1_min, x1_max = X[:,0].min() - 1, X[:,0].max() + 1
+    x2_min, x2_max = X[:,1].min() - 1, X[:,1].max() + 1
+    xx1, xx2 = np.meshgrid(
+        np.arange(x1_min, x1_max, resolution),
+        np.arange(x2_min, x2_max, resolution)
+    )
+    return xx1, xx2
 
 
 def plot_decision_boundaries(ax, X, y, classifier, resolution=0.02):
-    # Write here your code
-    pass
+    xx1, xx2 = create_meshgrid(X, resolution=resolution)
+    data = np.array([xx1.ravel(),xx2.ravel()]) # Matriz con dos filas xx1 y xx2 como listas
+    prediction = classifier.predict(data.T)
+    prediction = prediction.reshape(xx1.shape) # Vuelve a la forma original
+
+    ax.contour(xx1, xx2, prediction) # Fronteras de decision
+    ax.scatter(X[:,0], X[:,1], c=y) # Datos reales
+
+    ax.set_xlabel("Feature 1")
+    ax.set_ylabel("Feature 2")
+    return ax
+
 
 
 def plot_confusion_matrix(ax, y_true, y_pred, classes):
-    # Write here your code
-    pass
+    cm = confusion_matrix(y_true, y_pred)
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=classes)
+    disp.plot(ax=ax)
+    ax.set_title("Confusion Matrix")
+    return ax
 
 
 def train_and_visualize(X, y):
-    # Write here your code
-    pass
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+    knn = KNeighborsClassifier(n_neighbors=3, weights="uniform", metric="minkowski")
+    knn.fit(X_train, y_train)
+    return X_train, X_test, y_train, y_test, knn 
+
 
 
 # Para probar el código, descomenta las siguientes líneas

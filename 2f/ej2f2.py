@@ -65,26 +65,38 @@ from sklearn.base import BaseEstimator
 def train_model(
     X: np.ndarray, y: np.ndarray, test_size: float = 0.3, random_state: int = 42
 ) -> Tuple[BaseEstimator, np.ndarray, np.ndarray]:
-    # Write here your code
-    pass
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
+    rf = RandomForestClassifier(random_state=random_state)
+    rf.fit(X_train, y_train)
+    return rf, X_test, y_test
 
 
 def save_model(model: BaseEstimator, filename: str) -> bool:
-    # Write here your code
-    pass
+    with open(filename, "wb") as file:
+        pickle.dump(model, file)
+    return True
 
 
 def load_model_and_predict(filename: str, X_test: np.ndarray) -> np.ndarray:
-    # Write here your code
-    pass
+    with open(filename, "rb") as file:
+        model = pickle.load(file)
+    return model.predict(X_test)
 
 
 def plot_feature_importance(
     model: BaseEstimator, feature_names: List[str], figsize: Tuple[int, int] = (12, 8)
 ) -> plt.Figure:
-    # Write here your code
-    pass
+    importances = model.feature_importances_ # Devuelve la importancia de cada feature
+    indices = np.argsort(importances)[::-1] # Devuelve los indices que ordenarian importances de mas a menos importante ([::-1] le da la vuelta)
 
+    plt.figure(figsize=figsize)
+    plt.title("Feature Importances")
+    plt.bar(range(len(indices)), importances[indices])
+    plt.xticks(range(len(indices)), [feature_names[i] for i in indices], rotation=90)
+    plt.tight_layout()
+    plt.ylabel("Importance")
+    plt.xlabel("Feature")
+    return plt.gcf() 
 
 # Para probar el código, descomenta las siguientes líneas
 # if __name__ == "__main__":

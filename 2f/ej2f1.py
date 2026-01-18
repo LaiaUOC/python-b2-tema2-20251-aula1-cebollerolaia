@@ -50,18 +50,25 @@ from pandas.core.frame import DataFrame
 
 
 def create_histograms(df: DataFrame, features: List[str]) -> Figure:
-    # Write here your code
-    pass
+    fig, axs = plt.subplots(2,3)   # 6 histogramas distintos
+    for i, feature in enumerate(features):
+        ax = axs[i//3, i%3] # Recorre los seis axes en axs
+        sns.histplot(df, x=feature, hue="target", ax=ax, kde=True)
+    plt.tight_layout()
+    return fig
 
 
 def save_img_pickle(fig: Figure, filename: str) -> None:
-    # Write here your code
-    pass
+    with open(filename, "wb") as archivo:
+        pickle.dump(fig, archivo)
+    plt.close(fig)
+    return True
 
 
 def load_and_display_figure(filename: str) -> Figure:
-    # Write here your code
-    pass
+    with open(filename, "rb") as archivo:
+        fig = pickle.load(archivo)
+    return fig
 
 
 # Para probar el código, descomenta las siguientes líneas

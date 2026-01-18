@@ -37,18 +37,22 @@ from sklearn.metrics import r2_score, mean_squared_error
 
 
 def prepare_data_for_regression(data: pd.DataFrame) -> Tuple:
-    # Write here your code
-    pass
+    X = data.drop("MEDV", axis = 1)
+    y = data["MEDV"]
+    return train_test_split(X, y, test_size = 0.2)
 
 
 def perform_linear_regression(X_train, y_train) -> LinearRegression:
-    # Write here your code
-    pass
+    linear_regression = LinearRegression()
+    linear_regression.fit(X_train, y_train)
+    return linear_regression
 
 
 def evaluate_regression_model(model, X_test, y_test) -> Tuple[float, float]:
-    # Write here your code
-    pass
+    y_predict = model.predict(X_test)
+    R2 = r2_score(y_test, y_predict)
+    RMSE = mean_squared_error(y_test, y_predict)
+    return R2, RMSE
 
 
 # Para probar el código, descomenta las siguientes líneas

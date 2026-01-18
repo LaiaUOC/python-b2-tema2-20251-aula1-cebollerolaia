@@ -39,20 +39,41 @@ import matplotlib.pyplot as plt
 
 
 def prepare_data_for_clustering(file_path: str) -> pd.DataFrame:
-    # Write here your code
-    pass
+    data = pd.read_csv(file_path)
+    data = data.select_dtypes(include=[np.number])
+    data = data.dropna()
+    scaler = StandardScaler()
+    return scaler.fit_transform(data)
 
-
+"""
+3. Visualizar los resultados: `visualize_clusters(data, labels, is_testing_execution)` que visualiza los resultados del
+   clustering, idealmente utilizando una reducción de dimensionalidad para representar los datos en 2D o 3D si es
+   posible.
+"""
 def perform_kmeans_clustering(data: np.ndarray, n_clusters: int) -> np.ndarray:
-    # Write here your code
-    pass
+    k_means = KMeans(n_clusters=n_clusters)
+    k_means.fit(data)
+    return k_means.labels_
 
 
 def visualize_clusters(
     data: np.ndarray, labels: np.ndarray, is_testing_execution: bool = False
 ) -> Tuple[np.ndarray, plt.Figure, plt.Axes]:
-    # Write here your code
-    pass
+    pca = PCA(n_components=2)
+    data_reduced = pca.fit_transform(data)
+    fig, ax = plt.subplots()
+    ax.scatter(
+        data_reduced[:, 0],
+        data_reduced[:, 1],
+        c=labels
+    )
+    ax.set_xlabel("Componente principal 1")
+    ax.set_ylabel("Componente principal 2")
+    ax.set_title("Clusters formados por KMeans")
+
+    if not is_testing_execution:
+        plt.show()
+    return data_reduced, fig, ax
 
 
 # Para probar el código, desconmenta las siguientes líneas

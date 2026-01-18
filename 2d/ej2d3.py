@@ -39,8 +39,7 @@ import matplotlib.pyplot as plt
 def perform_linear_regression(
     data: pd.DataFrame, variable_1: str, variable_2: str
 ) -> Tuple[float, float, float, float, float]:
-    # Write here your code
-    pass
+    return linregress(data[variable_1], data[variable_2])
 
 
 def plot_regression_line(
@@ -51,9 +50,26 @@ def plot_regression_line(
     intercept: float,
     return_fig_ax_test=False,
 ):
-    # Write here your code
-    pass
+    fig, ax = plt.subplots()
+    ax.scatter(data[variable_1], data[variable_2], label="Original Data")
+    ax.plot(
+        data[variable_1],
+        slope*data[variable_1]+intercept,
+        label="Linear regression"
+    )
+    ax.set_xlabel(variable_1)
+    ax.set_ylabel(variable_2)
+    ax.set_title(f"Linear Regression between {variable_1} and {variable_2}")
+    ax.legend()
 
+    if return_fig_ax_test:
+        return fig, ax
+    else:
+        plt.show()
+
+"""2. Graficar la regresión lineal y los puntos de datos: `plot_regression_line(data: pd.Dataframe, variable_1: str,
+variable_2: str, slope: float, intercept: float)` que utiliza `matplotlib` para visualizar la línea de regresión lineal
+junto con los puntos de datos de las dos variables seleccionadas."""
 
 # Para probar el código, descomenta este código
 # if __name__ == '__main__':

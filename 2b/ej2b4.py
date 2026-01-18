@@ -30,16 +30,19 @@ from pathlib import Path
 
 
 def read_excel_sheet(file_path: str) -> pd.DataFrame:
-    # Write here your code
-    pass 
+    return pd.read_excel(file_path, sheet_name= "Sheet1")
 
 
 
 def read_excel_custom_sheet(file_path: str) -> pd.DataFrame:
+    # Función para detectar columnas no vacias
     def is_not_empty_column(col):
-        # Write here your code
-        pass
-
+        return col.dropna().any()
+    
+    df = pd.read_excel(file_path, sheet_name= "Sheet2", header= 3, skipfooter= 4)
+    cols_to_use = [col for col in df.columns if is_not_empty_column(df[col])]
+    return df[cols_to_use]
+        
 
 # Para probar el código, descomenta las siguientes líneas
 # file_path = "data/ej2b4/ramen-ratings.xlsx"

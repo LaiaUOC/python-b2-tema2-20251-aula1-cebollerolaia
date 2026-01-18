@@ -55,9 +55,38 @@ import typing as t
 def compare_monthly_sales(
     sales_year1: list, sales_year2: list, sales_year3: list, months: list
 ) -> t.Tuple[plt.Figure, plt.Axes, plt.Axes]:
-    # Write here your code
-    pass
+    width = 0.35
+    x = np.arange(len(months))
+    
+    # Figura principal
+    fig, (ax1, ax2) = plt.subplots(1, 2)
+    
+    # Gráfico de barras
+    ax1.bar(x - width/2, sales_year1, width, label = "2020")
+    ax1.bar(x + width/2, sales_year2, width, label = "2021")
 
+    ax1.set_xlabel("Months")
+    ax1.set_ylabel("Sales")
+    ax1.set_title("Monthly Sales Comparison: 2020 vs 2021")
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(months)
+    ax1.legend()
+
+    # Gráfico de líneas en eje gemelo
+    ax1_twin = ax1.twinx()
+    cummulative_sales_year1 = np.cumsum(sales_year1)
+    cummulative_sales_year2 = np.cumsum(sales_year2)
+    ax1_twin.plot(months, cummulative_sales_year1, label = "Cummulative 2020")
+    ax1_twin.plot(months, cummulative_sales_year2, label = "Cummulative 2021")
+
+    ax1_twin.set_ylabel("Cummulative Sales")
+    ax1_twin.legend()
+
+    # Gráfico pastel
+    ax2.pie(sales_year3, labels = months, autopct="%1.1f%%")
+    ax2.set_title("2022 Monthly Sales Distribution")
+
+    return fig, ax1, ax2
 
 # Para probar el código, descomenta las siguientes líneas
 # sales_2020 = np.random.randint(100, 500, 12)

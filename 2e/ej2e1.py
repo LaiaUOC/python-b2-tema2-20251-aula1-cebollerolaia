@@ -39,14 +39,62 @@ import matplotlib.pyplot as plt
 
 
 def plot_area_graph(df, column_name, ax=None):
-    # Write here your code
-    pass
+    if ax is None:
+        fig, ax = plt.subplots()
+    else:
+        fig = ax.figure
 
+    color_map = {0: 'green', 1: 'red', 2: 'blue'}
+    for target in df["target"].unique():
+        subset = df[df["target"] == target]
+        ax.fill_between(
+            subset.index,
+            subset[column_name],
+            label=f"Target {target}",
+            color = color_map[target]
+        )
 
+    ax.legend()
+    ax.set_title(f"Area Graph of {column_name}")
+    ax.set_xlabel("Index")
+    ax.set_ylabel(column_name)
+    return fig, ax
+
+"""    Descripción: Crea un gráfico de dispersión para comparar dos atributos entre las diferentes especies de iris. Los ejes
+    representan los valores de los atributos especificados por column_name_x y column_name_y, con los puntos coloreados según
+    diccionario_colores.
+    Parámetros:
+    df: DataFrame que contiene los datos.
+    column_name_x: Nombre de la columna que se quiere visualizar en el eje X del gráfico de dispersión.
+    column_name_y: Nombre de la columna que se quiere visualizar en el eje Y del gráfico de dispersión.
+"""
 def plot_scatter_graph(df, column_name_x, column_name_y, ax=None):
-    # Write here your code
-    pass
+    if ax is None:
+        fig, ax = plt.subplots()
+    else:
+        fig = ax.figure
+    
+    color_map = {0: 'green', 1: 'red', 2: 'blue'}
+    ax.scatter(df[column_name_x], df[column_name_y], c=df["target"].map(color_map), label="Target")
 
+    # Crear leyenda
+    legends = [
+        plt.Line2D(
+            [0], [0],
+            marker="o",
+            color="w",
+            markerfacecolor=color,
+            markersize=10,
+            label=f"Target {i}",
+        )
+        for i, color in color_map.items()
+    ]
+    ax.legend(handles=legends)
+
+    ax.set_title(f"Scatter Plot of {column_name_x} vs {column_name_y}")
+    ax.set_xlabel(column_name_x)
+    ax.set_ylabel(column_name_y)
+    return fig, ax
 
 # Para probar el código, descomenta las siguientes líneas
 # if __name__ == "__main__":
